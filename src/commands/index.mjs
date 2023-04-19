@@ -42,6 +42,8 @@ export const cli = async () => {
         `${chalk.green('✔')} successfully pushed all commits to ${origin}`
       );
       if (stdout) outro(stdout);
+    } else {
+      outro(`${chalk.red('✖')} push  canceled`);
     }
   }
 };

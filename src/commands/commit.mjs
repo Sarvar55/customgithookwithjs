@@ -3,7 +3,12 @@ import { confirm, outro, isCancel } from '@clack/prompts';
 import chalk from 'chalk';
 import { isConfirm } from '../util/confirim.mjs';
 import { confirmCommitMessage } from '../constant/constant.mjs';
-import { getStatus, gitCommit } from '../util/git.js';
+import {
+  addFilesToStaged,
+  getChangedFiles,
+  getStatus,
+  gitCommit
+} from '../util/git.js';
 
 export const commit = async (message) => {
   outro(`Commit message: ${message}`);
@@ -14,6 +19,15 @@ export const commit = async (message) => {
   if (isConfermedCommit && !isCancel(isConfermedCommit)) {
     if (statusOutput.trim() !== '') {
       try {
+        const changedFiles = await getChangedFiles();
+
+        if (changedFiles.length > 0) {
+          await addFilesToStaged(changedFiles);
+        } else {
+          outro(`${chalk.red('✖')} No changes to commit.`);
+          process.exit(1);
+        }
+
         const commitOutput = await gitCommit(message);
         outro(`${chalk.green('✔')} successfully committed`);
         outro(commitOutput);

@@ -11,12 +11,17 @@ export const getStatus = async () => {
 };
 
 export const addFilesToStaged = async (files) => {
-  await execa('git', ['add', ...files]);
+  const { stdout } = await execa('git', ['add', ...files]);
+  return stdout;
 };
 
-export const getChangedFiles = async () => {
-  const { stdout } = await execa('git', ['status', '-s']);
+export const gitDir = async () => {
+  const { stdout } = await execa('git', ['rev-parse', '--show-toplevel']);
   return stdout;
+};
+export const getChangedFiles = async () => {
+  const { stdout: modified } = await execa('git', ['ls-files', '--modified']);
+  return [...modified.split('\n')].sort();
 };
 
 export const getGitRemoteUrl = async () => {
