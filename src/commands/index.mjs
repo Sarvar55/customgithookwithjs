@@ -20,7 +20,7 @@ export const getCommitMessage = async () => {
 
   const commitType = await select({
     message: 'Select commit type:',
-    options: commentTypes
+    options: emojiEnabled ? commentTypesWithEmoji : commentTypes
   });
 
   const commitSubject = await text({
