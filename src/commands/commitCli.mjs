@@ -21,12 +21,12 @@ export const commit = async (message) => {
       try {
         const changedFiles = await getChangedFiles();
 
-        if (changedFiles.length > 0) {
-          await addFilesToStaged(changedFiles);
-        } else {
+        if (changedFiles.length > 0) await addFilesToStaged(changedFiles);
+        else {
           outro(`${chalk.red('✖')} No changes to commit.`);
           process.exit(1);
         }
+
         const commitOutput = await gitCommit(message);
         outro(`${chalk.green('✔')} successfully committed`);
         outro(commitOutput);
