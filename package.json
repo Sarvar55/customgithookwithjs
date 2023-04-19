@@ -2,6 +2,7 @@
     "name": "customcommithook",
     "version": "1.0.0",
     "main": "index.js",
+    "description": "This project allows you to commit changes to your Git repository in a standardized manner by adding prefixes such as feat, fix, and refactor, and even including emojis if you wish. This makes it easier to organize and understand the changes made to the codebase.",
     "author": "Sarvar55",
     "license": "MIT",
     "dependencies": {

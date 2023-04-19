@@ -1,4 +1,4 @@
-import { intro, confirm, select, spinner, text, outro } from '@clack/prompts';
+import { intro, confirm, select, text, outro } from '@clack/prompts';
 import { commentTypesWithEmoji, commentTypes } from '../util/CommentType.mjs';
 import chalk from 'chalk';
 
@@ -10,16 +10,17 @@ export const getCommitMessage = async () => {
   });
 
   if (!shouldContinue) {
-    console.log('Commit işlemi iptal edildi.');
-    return;
+    outro(`${chalk.red('✖')} ${' The commit operation has been cancelled.'}`);
+    process.exit(1);
   }
+
   const emojiEnabled = await confirm({
     message: 'Do you want to add emoji to commit message?'
   });
 
   const commitType = await select({
     message: 'Select commit type:',
-    options: emojiEnabled ? commentTypesWithEmoji : commentTypes
+    options: commentTypes
   });
 
   const commitSubject = await text({
