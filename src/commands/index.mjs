@@ -30,7 +30,7 @@ export const cli = async () => {
   const isCommited = await commit(commitMessage);
 
   if (isCommited) {
-    const isPushConfirmed = isConfirm('Do you want to run `git push`?');
+    const isPushConfirmed = await isConfirm('Do you want to run `git push`?');
 
     if (isPushConfirmed && !isCancel(isPushConfirmed)) {
       const pushProgress = spinner();
