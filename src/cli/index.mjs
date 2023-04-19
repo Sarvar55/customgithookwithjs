@@ -1,9 +1,8 @@
 import { intro, select } from '@clack/prompts';
-import { commentTypesWithEmoji, commentTypes } from '../util/CommentType.mjs';
 import { isConfirm } from '../util/confirim.mjs';
 import { getCommitSubject } from '../util/git.js';
-import { commit } from './commitCli.mjs';
-import { push } from './pushCli.mjs';
+import { commit } from '../commands/commitCli.mjs';
+import { push } from '../commands/pushCli.mjs';
 
 export const cli = async () => {
   intro('Commit Message');
