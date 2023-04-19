@@ -1,8 +1,6 @@
-import { execa } from 'execa';
-import { confirm, outro, isCancel } from '@clack/prompts';
+import { outro, isCancel } from '@clack/prompts';
 import chalk from 'chalk';
 import { isConfirm } from '../util/confirim.mjs';
-import { confirmCommitMessage } from '../constant/constant.mjs';
 import {
   addFilesToStaged,
   getChangedFiles,
@@ -13,7 +11,7 @@ import {
 export const commit = async (message) => {
   outro(`Commit message: ${message}`);
 
-  const isConfermedCommit = await isConfirm(confirmCommitMessage);
+  const isConfermedCommit = await isConfirm('Confirm the commit message?');
   const statusOutput = await getStatus();
 
   if (isConfermedCommit && !isCancel(isConfermedCommit)) {
