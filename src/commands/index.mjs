@@ -9,7 +9,7 @@ import { push } from './pushCli.mjs';
 export const cli = async () => {
   intro('Commit Message');
 
-  const emojiEnabled = isConfirm(wantCommitMessage);
+  const emojiEnabled = await isConfirm(wantCommitMessage);
 
   const commitType = await select({
     message: 'Select commit type:',
