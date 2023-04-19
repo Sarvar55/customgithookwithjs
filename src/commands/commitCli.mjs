@@ -28,6 +28,7 @@ export const commit = async (message) => {
         const commitOutput = await gitCommit(message);
         outro(`${chalk.green('✔')} successfully committed`);
         outro(commitOutput);
+
         return true;
       } catch (err) {
         outro(`${chalk.red('✖')} ${err.message}`);
