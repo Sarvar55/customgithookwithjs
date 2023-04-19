@@ -1,2 +1,3 @@
-import { commit } from './src/commands/commit.mjs';
-commit();
+import { cli } from './src/commands/index.mjs';
+
+cli();

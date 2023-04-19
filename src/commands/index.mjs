@@ -1,38 +1,47 @@
-import { intro, confirm, select, text, outro } from '@clack/prompts';
+import {
+  intro,
+  select,
+  outro,
+  spinner,
+  isCancel,
+  confirm
+} from '@clack/prompts';
 import { commentTypesWithEmoji, commentTypes } from '../util/CommentType.mjs';
 import chalk from 'chalk';
+import { isConfirm } from '../util/confirim.mjs';
+import { wantCommitMessage } from '../constant/constant.mjs';
+import { getCommitSubject, getGitRemoteUrl, gitPush } from '../util/git.js';
+import { commit } from './commit.mjs';
 
-export const getCommitMessage = async () => {
+export const cli = async () => {
   intro('Commit Message');
 
-  const shouldContinue = await confirm({
-    message: 'Do you want to continue?'
-  });
-
-  if (!shouldContinue) {
-    outro(`${chalk.red('✖')} ${' The commit operation has been cancelled.'}`);
-    process.exit(1);
-  }
-
-  const emojiEnabled = await confirm({
-    message: 'Do you want to add emoji to commit message?'
-  });
+  const emojiEnabled = isConfirm(wantCommitMessage);
 
   const commitType = await select({
     message: 'Select commit type:',
     options: emojiEnabled ? commentTypesWithEmoji : commentTypes
   });
 
-  const commitSubject = await text({
-    message: 'Enter commit subject:',
-    validate(value) {
-      if (value.length === 0) {
-        outro(`${chalk.red('✖')} ${'commit is required'}`);
-        process.exit(1);
-      }
-    }
-  });
+  const commitSubject = await getCommitSubject();
 
   const commitMessage = `${commitType}: ${commitSubject}`;
-  return commitMessage;
+
+  const isCommited = await commit(commitMessage);
+
+  if (isCommited) {
+    const isPushConfirmed = isConfirm('Do you want to run `git push`?');
+
+    if (isPushConfirmed && !isCancel(isPushConfirmed)) {
+      const pushProgress = spinner();
+      pushProgress.start('push işlemi gerceklesiyor');
+      const origin = await getGitRemoteUrl();
+      const stdout = await gitPush(origin);
+
+      pushSpinner.stop(
+        `${chalk.green('✔')} successfully pushed all commits to ${origin}`
+      );
+      if (stdout) outro(stdout);
+    }
+  }
 };

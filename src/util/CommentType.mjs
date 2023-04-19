@@ -24,6 +24,13 @@ const emojis = {
   security: '🔒'
 };
 
+// export const commentTypesWithEmoji = commentTypes.map((commentType) => [
+//   {
+//     value: `${emojis[commentType.value]} ${commentType.value}`,
+//     label: commentType.label
+//   }
+// ]);
+
 export const commentTypesWithEmoji = [
   { label: `${emojis.build} Build`, value: `${emojis.build} build` },
   { label: `${emojis.chore} Chore`, value: `${emojis.chore} chore` },

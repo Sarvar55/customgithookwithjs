@@ -1,40 +1,33 @@
-import { getCommitMessage } from './index.mjs';
 import { execa } from 'execa';
 import { confirm, outro, isCancel } from '@clack/prompts';
 import chalk from 'chalk';
-export const commit = () => {
-  getCommitMessage()
-    .then(async (message) => {
-      outro(`Commit message: ${message}`);
+import { isConfirm } from '../util/confirim.mjs';
+import { confirmCommitMessage } from '../constant/constant.mjs';
+import { getStatus, gitCommit } from '../util/git.js';
 
-      const isConfermedCommit = await confirm({
-        message: 'Confirm the commit message?'
-      });
+export const commit = async (message) => {
+  outro(`Commit message: ${message}`);
 
-      if (isConfermedCommit && !isCancel(isConfermedCommit)) {
-        const { stdout: statusOutput } = await execa('git', [
-          'status',
-          '--porcelain'
-        ]);
+  const isConfermedCommit = await isConfirm(confirmCommitMessage);
+  const statusOutput = await getStatus();
 
-        if (statusOutput.trim() !== '') {
-          await execa('git', ['add', '.']);
-          const { stdout: commitOutput } = await execa('git', [
-            'commit',
-            '-m',
-            message
-          ]);
-          outro(`${chalk.green('✔')} successfully committed`);
-          outro(commitOutput);
-        } else {
-          outro(`${chalk.red('✖')} No changes to commit.`);
-        }
-      } else {
-        outro(`${chalk.red('✖')} commit message canceled`);
+  if (isConfermedCommit && !isCancel(isConfermedCommit)) {
+    if (statusOutput.trim() !== '') {
+      try {
+        const commitOutput = await gitCommit(message);
+        outro(`${chalk.green('✔')} successfully committed`);
+        outro(commitOutput);
+        return true;
+      } catch (err) {
+        outro(`${chalk.red('✖')} ${err.message}`);
+        process.exit(1);
       }
-    })
-    .catch((err) => {
-      outro(`${chalk.red('✖')} ${err.message}`);
-      process.exit(1);
-    });
+    } else {
+      outro(`${chalk.red('✖')} No changes to commit.`);
+      return false;
+    }
+  } else {
+    outro(`${chalk.red('✖')} commit message canceled`);
+    return false;
+  }
 };
