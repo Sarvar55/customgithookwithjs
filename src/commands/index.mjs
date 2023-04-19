@@ -38,7 +38,7 @@ export const cli = async () => {
       const origin = await getGitRemoteUrl();
       const stdout = await gitPush(origin);
 
-      pushSpinner.stop(
+      pushProgress.stop(
         `${chalk.green('✔')} successfully pushed all commits to ${origin}`
       );
       if (stdout) outro(stdout);
