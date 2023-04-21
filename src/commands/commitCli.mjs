@@ -8,16 +8,17 @@ import {
   gitCommit
 } from '../util/git.js';
 
-export async function commit(message) {
+export const commit = async (message) => {
   try {
     const isConfirmedCommit = await isConfirm('Commit mesajını onaylayın?');
-    const statusOutput = await getStatus();
-    const changedFiles = await getChangedFiles();
 
     if (!isConfirmedCommit || isCancel(isConfirmedCommit)) {
       outro(`${chalk.red('✖')} commit mesajı iptal edildi.`);
       process.exit(1);
     }
+
+    const statusOutput = await getStatus();
+    const changedFiles = await getChangedFiles();
 
     if (statusOutput.trim() === '' || changedFiles.length === 0) {
       outro(`${chalk.red('✖')} commit için herhangi bir değişiklik yok.`);
@@ -35,4 +36,4 @@ export async function commit(message) {
     outro(`${chalk.red('✖')} ${err.message}`);
     process.exit(1);
   }
-}
+};
