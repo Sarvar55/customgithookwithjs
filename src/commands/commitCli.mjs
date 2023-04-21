@@ -1,14 +1,29 @@
-import { outro, isCancel } from '@clack/prompts';
+import { outro, isCancel, select } from '@clack/prompts';
 import chalk from 'chalk';
 import { isConfirm } from '../util/confirim.mjs';
 import {
   addFilesToStaged,
   getChangedFiles,
+  getCommitSubject,
   getStatus,
   gitCommit
 } from '../util/git.js';
+import { commitTypes, commitTypesWithEmoji } from '../util/CommitType.mjs';
 
-export const commit = async (message) => {
+export const commit = async () => {
+  const emojiEnabled = await isConfirm(
+    'Do you want to add emoji to commit message?'
+  );
+
+  const commitType = await select({
+    message: 'Select commit type:',
+    options: emojiEnabled ? commitTypesWithEmoji : commitTypes
+  });
+
+  const commitSubject = await getCommitSubject();
+
+  const message = `${commitType}: ${commitSubject}`;
+
   try {
     const isConfirmedCommit = await isConfirm('Commit mesajını onaylayın?');
 
