@@ -3,6 +3,7 @@ import { isConfirm } from '../util/confirim.mjs';
 import { getCommitSubject } from '../util/git.js';
 import { commit } from '../commands/commitCli.mjs';
 import { push } from '../commands/pushCli.mjs';
+import { commitTypes, commitTypesWithEmoji } from '../util/CommitType.mjs';
 
 export const cli = async () => {
   intro('Commit Message');
@@ -13,7 +14,7 @@ export const cli = async () => {
 
   const commitType = await select({
     message: 'Select commit type:',
-    options: emojiEnabled ? commentTypesWithEmoji : commentTypes
+    options: emojiEnabled ? commitTypesWithEmoji : commitTypes
   });
 
   const commitSubject = await getCommitSubject();

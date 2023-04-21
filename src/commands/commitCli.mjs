@@ -8,38 +8,36 @@ import {
   gitCommit
 } from '../util/git.js';
 
-export const commit = async (message) => {
-  outro(`Commit message: ${message}`);
+export async function commit(message) {
+  try {
+    const isConfirmedCommit = await isConfirm('Commit mesajını onaylayın?');
+    const statusOutput = await getStatus();
 
-  const isConfermedCommit = await isConfirm('Confirm the commit message?');
-  const statusOutput = await getStatus();
-
-  if (isConfermedCommit && !isCancel(isConfermedCommit)) {
-    if (statusOutput.trim() !== '') {
-      try {
-        const changedFiles = await getChangedFiles();
-
-        if (changedFiles.length > 0) await addFilesToStaged(changedFiles);
-        else {
-          outro(`${chalk.red('✖')} No changes to commit.`);
-          process.exit(1);
-        }
-
-        const commitOutput = await gitCommit(message);
-        outro(`${chalk.green('✔')} successfully committed`);
-        outro(commitOutput);
-
-        return true;
-      } catch (err) {
-        outro(`${chalk.red('✖')} ${err.message}`);
-        process.exit(1);
-      }
-    } else {
-      outro(`${chalk.red('✖')} No changes to commit.`);
+    if (!isConfirmedCommit || isCancel(isConfirmedCommit)) {
+      outro(`${chalk.red('✖')} commit mesajı iptal edildi.`);
       return false;
     }
-  } else {
-    outro(`${chalk.red('✖')} commit message canceled`);
-    return false;
+
+    if (statusOutput.trim() === '') {
+      outro(`${chalk.red('✖')} commit için herhangi bir değişiklik yok.`);
+      return false;
+    }
+
+    const changedFiles = await getChangedFiles();
+    if (changedFiles.length === 0) {
+      outro(`${chalk.red('✖')} commit için herhangi bir değişiklik yok.`);
+      return false;
+    }
+
+    await addFilesToStaged(changedFiles);
+
+    const commitOutput = await gitCommit(message);
+    outro(`${chalk.green('✔')} commit başarılı.`);
+    outro(commitOutput);
+
+    return true;
+  } catch (err) {
+    outro(`${chalk.red('✖')} ${err.message}`);
+    process.exit(1);
   }
-};
+}
