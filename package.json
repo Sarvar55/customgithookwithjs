@@ -8,10 +8,12 @@
     "dependencies": {
         "@clack/prompts": "^0.6.3",
         "chalk": "^5.2.0",
+        "configstore": "^6.0.0",
         "eslint": "^8.38.0",
         "execa": "^7.1.1",
         "prettier": "^2.8.7",
-        "timers-promises": "^1.0.1"
+        "timers-promises": "^1.0.1",
+        "yargs": "^17.7.1"
     },
     "type": "module",
     "scripts": {
