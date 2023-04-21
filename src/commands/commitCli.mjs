@@ -12,21 +12,16 @@ export async function commit(message) {
   try {
     const isConfirmedCommit = await isConfirm('Commit mesajını onaylayın?');
     const statusOutput = await getStatus();
+    const changedFiles = await getChangedFiles();
 
     if (!isConfirmedCommit || isCancel(isConfirmedCommit)) {
       outro(`${chalk.red('✖')} commit mesajı iptal edildi.`);
-      return false;
+      process.exit(1);
     }
 
-    if (statusOutput.trim() === '') {
+    if (statusOutput.trim() === '' || changedFiles.length === 0) {
       outro(`${chalk.red('✖')} commit için herhangi bir değişiklik yok.`);
-      return false;
-    }
-
-    const changedFiles = await getChangedFiles();
-    if (changedFiles.length === 0) {
-      outro(`${chalk.red('✖')} commit için herhangi bir değişiklik yok.`);
-      return false;
+      process.exit(1);
     }
 
     await addFilesToStaged(changedFiles);
