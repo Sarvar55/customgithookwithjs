@@ -16,7 +16,7 @@ export const commit = async() => {
         'Do you want to add emoji to commit message?'
     );
 
-    const commitType = await cliSelect({
+    const { value: commitType } = await cliSelect({
         values: emojiEnabled ? commitTypesWithEmoji : commitTypes,
         valueRenderer: (value, selected) => {
             if (selected) {
