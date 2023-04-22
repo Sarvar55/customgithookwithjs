@@ -1,4 +1,4 @@
-import { outro, isCancel, select } from '@clack/prompts';
+import { outro, isCancel } from '@clack/prompts';
 import chalk from 'chalk';
 import { isConfirm } from '../util/confirim.mjs';
 import {
@@ -8,12 +8,7 @@ import {
     getStatus,
     gitCommit
 } from '../util/git.js';
-import {
-    commentTypesWithEmoji1,
-    commitTypes,
-    commitTypes1,
-    commitTypesWithEmoji
-} from '../util/CommitType.mjs';
+import { commitTypesWithEmoji, commitTypes } from '../util/CommitType.mjs';
 import cliSelect from 'cli-select';
 
 export const commit = async() => {
@@ -21,13 +16,8 @@ export const commit = async() => {
         'Do you want to add emoji to commit message?'
     );
 
-    // const commitType = await select({
-    //   message: 'Select commit type:',
-    //   options: emojiEnabled ? commitTypesWithEmoji : commitTypes
-    // });
-
     const commitType = await cliSelect({
-        values: !emojiEnabled ? commitTypes1 : commentTypesWithEmoji1,
+        values: emojiEnabled ? commitTypesWithEmoji : commitTypes,
         valueRenderer: (value, selected) => {
             if (selected) {
                 return chalk.underline(value);
