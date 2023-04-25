@@ -26,7 +26,8 @@ export const getChangedFiles = async () => {
     '--others',
     '--exclude-standard'
   ]);
-  console.log(modified);
+  if (!modified) return [];
+
   return [...modified.split('\n')].sort();
 };
 
