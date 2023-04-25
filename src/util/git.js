@@ -23,7 +23,7 @@ export const getChangedFiles = async () => {
   const { stdout: modified } = await execa('git', [
     'ls-files',
     '--modified',
-    '-mco',
+    '--others',
     '--exclude-standard'
   ]);
   return [...modified.split('\n')].sort();
