@@ -20,7 +20,12 @@ export const gitDir = async () => {
   return stdout;
 };
 export const getChangedFiles = async () => {
-  const { stdout: modified } = await execa('git', ['ls-files', '--modified']);
+  const { stdout: modified } = await execa('git', [
+    'ls-files',
+    '--modified',
+    '-mco',
+    '--exclude-standard'
+  ]);
   return [...modified.split('\n')].sort();
 };
 
