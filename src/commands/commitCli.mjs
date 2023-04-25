@@ -13,6 +13,8 @@ import cliSelect from 'cli-select';
 
 export const commit = async () => {
   const changedFiles = await getChangedFiles();
+
+  console.log(changedFiles);
   if (changedFiles.length === 0) {
     outro(`${chalk.red('✖')} commit mesajı iptal edildi.`);
     process.exit(1);
