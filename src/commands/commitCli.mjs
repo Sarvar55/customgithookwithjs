@@ -10,6 +10,7 @@ import {
 } from '../util/git.js';
 import { commitTypesWithEmoji, commitTypes } from '../util/CommitType.mjs';
 import cliSelect from 'cli-select';
+import { getConfigValue, config } from '../config/config-store.mjs';
 
 export const commit = async () => {
   const changedFiles = await getChangedFiles();
@@ -19,9 +20,7 @@ export const commit = async () => {
     process.exit(1);
   }
 
-  const emojiEnabled = await isConfirm(
-    'Do you want to add emoji to commit message?'
-  );
+  const emojiEnabled = await getConfigValue(config, 'emoji');
 
   const { value: commitType } = await cliSelect({
     values: emojiEnabled ? commitTypesWithEmoji : commitTypes,
