@@ -5,6 +5,7 @@ import chalk from 'chalk';
 
 export const push = async () => {
   const isPushConfirmed = await isConfirm('Do you want to run `git push`?');
+
   if (isPushConfirmed && !isCancel(isPushConfirmed)) {
     const pushProgress = spinner();
 

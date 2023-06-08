@@ -19,6 +19,7 @@ export const gitDir = async () => {
   const { stdout } = await execa('git', ['rev-parse', '--show-toplevel']);
   return stdout;
 };
+
 export const getLocalBranches = async () => {
   try {
     const gitDirectory = await gitDir();
