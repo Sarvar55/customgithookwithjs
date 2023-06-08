@@ -9,13 +9,9 @@ export const cli = async () => {
   const isCommited = await commit();
 
   if (isCommited) {
-    getLocalBranches()
-      .then((branches) => {
-        console.log('Local Branches:', branches);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    (await getLocalBranches()).forEach((branch) => {
+      console.log(branch);
+    });
     await push();
   }
 };
