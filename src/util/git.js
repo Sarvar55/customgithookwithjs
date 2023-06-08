@@ -19,6 +19,23 @@ export const gitDir = async () => {
   const { stdout } = await execa('git', ['rev-parse', '--show-toplevel']);
   return stdout;
 };
+
+export const getLocalBranches = async () => {
+  try {
+    const { stdout } = await execa('git', ['branch'], { cwd: gitDir() });
+
+    const branches = stdout
+      .split('\n')
+      .map((branch) => branch.trim())
+      .filter((branch) => !!branch);
+
+    return branches;
+  } catch (error) {
+    console.error('Error retrieving local branches:', error);
+    return [];
+  }
+};
+
 export const getChangedFiles = async () => {
   const { stdout: modified } = await execa('git', [
     'ls-files',
