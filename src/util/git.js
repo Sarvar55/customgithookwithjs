@@ -19,12 +19,16 @@ export const gitDir = async () => {
   const { stdout } = await execa('git', ['rev-parse', '--show-toplevel']);
   return stdout;
 };
-
 export const getLocalBranches = async () => {
   try {
-    const { stdout } = await execa('git', ['branch'], { cwd: gitDir() });
+    const { stdout } = await execa('git', ['rev-parse', '--show-toplevel']);
+    const gitDir = stdout.trim();
 
-    const branches = stdout
+    const { stdout: branchOutput } = await execa('git', ['branch'], {
+      cwd: gitDir
+    });
+
+    const branches = branchOutput
       .split('\n')
       .map((branch) => branch.trim())
       .filter((branch) => !!branch);
