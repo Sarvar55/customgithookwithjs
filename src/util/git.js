@@ -15,17 +15,12 @@ export const addFilesToStaged = async (files) => {
   return stdout;
 };
 
-export const gitDir = async () => {
-  const { stdout } = await execa('git', ['rev-parse', '--show-toplevel']);
-  return stdout;
-};
 export const getLocalBranches = async () => {
   try {
-    const { stdout } = await execa('git', ['rev-parse', '--show-toplevel']);
-    const gitDir = stdout.trim();
+    const gitDirectory = await gitDir();
 
     const { stdout: branchOutput } = await execa('git', ['branch'], {
-      cwd: gitDir
+      cwd: gitDirectory
     });
 
     const branches = branchOutput
