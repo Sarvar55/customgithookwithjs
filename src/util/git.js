@@ -63,9 +63,8 @@ export const gitCommit = async (message) => {
 
 export const gitPush = async (origin, branch) => {
   let pushArgs = ['push', '--verbose', origin];
-  if (branch) {
-    pushArgs.push(branch);
-  }
+  if (branch) pushArgs.push(branch);
+
   const { stdout } = await execa('git', pushArgs);
   return stdout;
 };
