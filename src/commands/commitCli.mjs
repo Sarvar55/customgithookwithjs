@@ -1,6 +1,6 @@
 import { outro, isCancel } from '@clack/prompts';
 import chalk from 'chalk';
-import { isConfirm } from '../util/confirim.mjs';
+import { customCliSelect, isConfirm } from '../util/util.mjs';
 import {
   addFilesToStaged,
   getChangedFiles,
@@ -8,7 +8,7 @@ import {
   getStatus,
   gitCommit
 } from '../util/git.js';
-import { commitTypesWithEmoji, commitTypes } from '../util/CommitType.mjs';
+import { commitTypesWithEmoji, commitTypes } from '../util/constants.mjs';
 import cliSelect from 'cli-select';
 import { getConfigValue, config } from '../config/config-store.mjs';
 
@@ -22,16 +22,9 @@ export const commit = async () => {
 
   const emojiEnabled = await getConfigValue(config, 'emoji');
 
-  const { value: commitType } = await cliSelect({
-    values: emojiEnabled ? commitTypesWithEmoji : commitTypes,
-    valueRenderer: (value, selected) => {
-      if (selected) {
-        return chalk.underline(value);
-      }
-      return value;
-    }
-  });
-
+  const commitType = await customCliSelect(
+    emojiEnabled ? commitTypesWithEmoji : commitTypes
+  );
   const commitSubject = await getCommitSubject();
 
   const message = `${commitType}: ${commitSubject}`;
