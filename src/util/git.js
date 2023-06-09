@@ -66,7 +66,6 @@ export const gitPush = async (origin, branch) => {
   if (branch) {
     pushArgs.push(branch);
   }
-
   const { stdout } = await execa('git', pushArgs);
   return stdout;
 };
