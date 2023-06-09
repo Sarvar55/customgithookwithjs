@@ -9,8 +9,8 @@ import {
   gitCommit
 } from '../util/git.js';
 import { commitTypesWithEmoji, commitTypes } from '../util/constants.mjs';
-import cliSelect from 'cli-select';
 import { getConfigValue, config } from '../config/config-store.mjs';
+import { translateCommitMessage } from '../api.mjs';
 
 export const commit = async () => {
   const changedFiles = await getChangedFiles();
@@ -26,7 +26,8 @@ export const commit = async () => {
     emojiEnabled ? commitTypesWithEmoji : commitTypes
   );
   const commitSubject = await getCommitSubject();
-
+  const translatedCommitMessage = await translateCommitMessage(commitSubject);
+  console.log(translatedCommitMessage);
   const message = `${commitType}: ${commitSubject}`;
 
   try {

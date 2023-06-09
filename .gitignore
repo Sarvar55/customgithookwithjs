@@ -7,3 +7,4 @@ lerna-debug.log*
 .pnpm-debug.log*
 # Dependency directories
 node_modules/
+.env
