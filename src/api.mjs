@@ -1,11 +1,6 @@
-import { log, outro } from '@clack/prompts';
+import { outro } from '@clack/prompts';
 import chalk from 'chalk';
 import { Configuration, OpenAIApi } from 'openai';
-import {
-  config,
-  deleteConfigValue,
-  getConfigValue
-} from './config/config-store.mjs';
 
 const translateCommitMessage = async (commit) => {
   const openai = new OpenAIApi(
@@ -13,10 +8,6 @@ const translateCommitMessage = async (commit) => {
       apiKey: process.env.OPENAI_API_KEY
     })
   );
-
-  //   const token = await getConfigValue(config, 'token');
-
-  //   console.log(token);
   try {
     const message = `${`commit message: (${commit})`}  ${process.env.PROMPT}`;
     console.log(message);
