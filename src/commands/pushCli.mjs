@@ -32,5 +32,6 @@ export const push = async () => {
     }
   } catch (error) {
     outro(`${chalk.red('✖')} push error: ${error.message}`);
+    process.exit(1);
   }
 };
