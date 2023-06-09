@@ -693,7 +693,7 @@ onetime@^6.0.0:
   dependencies:
     mimic-fn "^4.0.0"
 
-openai@^3.1.0:
+openai@^3.2.1:
   version "3.2.1"
   resolved "https://registry.npmjs.org/openai/-/openai-3.2.1.tgz"
   integrity sha512-762C9BNlJPbjjlWZi4WYK9iM2tAVAv0uUp1UmI34vb0CN5T2mjB/qM6RYBmNKMh/dN9fC+bxqPwWJZUTWW052A==

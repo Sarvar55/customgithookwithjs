@@ -26,9 +26,14 @@ export const commit = async () => {
     emojiEnabled ? commitTypesWithEmoji : commitTypes
   );
   const commitSubject = await getCommitSubject();
-  const translatedCommitMessage = await translateCommitMessage(commitSubject);
+  const translatedCommitMessage = await translateCommitMessage(
+    commitSubject
+  ).then((res) => {
+    return res;
+  });
+
   console.log(translatedCommitMessage);
-  const message = `${commitType}: ${commitSubject}`;
+  const message = `${commitType}: ${translatedCommitMessage}`;
 
   try {
     const isConfirmedCommit = await isConfirm('Commit mesajını onaylayın?');
