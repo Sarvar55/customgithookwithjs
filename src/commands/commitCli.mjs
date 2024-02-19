@@ -34,6 +34,8 @@ export const commit = async () => {
   try {
     const isConfirmedCommit = await isConfirm('Commit mesajını onaylayın?');
 
+    //merhab dunya
+
     if (!isConfirmedCommit || isCancel(isConfirmedCommit)) {
       outro(`${chalk.red('✖')} commit mesajı iptal edildi.`);
       process.exit(1);
