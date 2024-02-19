@@ -5,7 +5,7 @@ import { Configuration, OpenAIApi } from 'openai';
 const translateCommitMessage = async (commit) => {
   const openai = new OpenAIApi(
     new Configuration({
-      apiKey: process.env.OPENAI_API_KEY
+      apiKey: "jksfjknsk"
     })
   );
   try {
