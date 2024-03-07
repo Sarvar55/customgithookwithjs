@@ -9,7 +9,7 @@ import chalk from 'chalk';
 
 const emojiCommand = command(
   {
-    name: 'config',
+    name: 'configs',
     parameters: ['<mode>', '<key=value>']
   },
   (argv) => {

@@ -5,9 +5,11 @@ import chalk from 'chalk';
 
 export const push = async () => {
   const isPushConfirmed = await isConfirm('Do you want to run `git push`?');
+
   const shouldPushToBranch = await isConfirm(
     'Is there a branch you want to `push specifically`?'
   );
+
   try {
     let selectedBranch = '';
     if (shouldPushToBranch && !isCancel(shouldPushToBranch)) {
@@ -28,7 +30,7 @@ export const push = async () => {
 
       if (stdout) outro(stdout);
     } else {
-      outro(`${chalk.red('✖')} push  canceled`);
+      outro(`${chalk.red('✖')} Push canceled`);
     }
   } catch (error) {
     outro(`${chalk.red('✖')} push error: ${error.message}`);
